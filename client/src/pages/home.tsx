@@ -36,7 +36,7 @@ export default function Home() {
 
           <div className="flex-1">
             <TerminalText
-              text="Hello, World! Name's Daniel. I'm a Aerospace Machine Learning Developer & Entrepreneur"
+              text="Hello, World! Name's Daniel. I'm a Machine Learning Developer & Entrepreneur"
               className="text-4xl md:text-6xl font-bold"
             />
           </div>

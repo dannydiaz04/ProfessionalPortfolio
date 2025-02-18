@@ -5,16 +5,16 @@ import { ExternalLink } from 'lucide-react';
 
 const businesses = [
   {
-    name: 'TechVentures Inc.',
-    description: 'Software consulting and development firm specializing in enterprise solutions.',
+    name: 'Nomadic Space',
+    description: 'Asteroid Mining & In Space Resource Utilization.',
     role: 'Founder & CEO',
-    industry: 'Technology',
+    industry: 'Technology/Space',
     link: 'https://example.com/techventures'
   },
   {
-    name: 'DataFlow Systems',
+    name: 'Ignite Intelligence Systems',
     description: 'Big data analytics and visualization platform for business intelligence.',
-    role: 'Co-founder & CTO',
+    role: 'Founder & CEO',
     industry: 'Data Analytics',
     link: 'https://example.com/dataflow'
   },
