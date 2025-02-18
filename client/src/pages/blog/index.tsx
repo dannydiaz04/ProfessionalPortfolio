@@ -3,28 +3,25 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'wouter';
 import { format } from 'date-fns';
-
-// Temporary data until we connect to the backend
-const blogPosts = [
-  {
-    id: 1,
-    title: 'Getting Started with Machine Learning',
-    excerpt: 'An introduction to the fundamentals of machine learning and its applications in modern technology.',
-    slug: 'getting-started-with-ml',
-    publishedAt: new Date('2024-02-18'),
-    tags: ['Machine Learning', 'AI', 'Technology']
-  },
-  {
-    id: 2,
-    title: 'The Future of Space Technology',
-    excerpt: 'Exploring upcoming trends and innovations in space exploration and asteroid mining.',
-    slug: 'future-of-space-tech',
-    publishedAt: new Date('2024-02-17'),
-    tags: ['Space', 'Technology', 'Innovation']
-  }
-];
+import { useQuery } from '@tanstack/react-query';
+import type { BlogPost } from '@shared/schema';
 
 export default function Blog() {
+  const { data: posts = [], isLoading } = useQuery<BlogPost[]>({
+    queryKey: ['/api/blog'],
+  });
+
+  if (isLoading) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-16">
+        <div className="space-y-8">
+          <h1 className="text-4xl font-mono font-bold">Blog</h1>
+          <p className="text-muted-foreground">Loading posts...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-16">
       <motion.div
@@ -37,7 +34,7 @@ export default function Blog() {
         </div>
 
         <div className="grid gap-6">
-          {blogPosts.map((post, index) => (
+          {posts.map((post, index) => (
             <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}
@@ -52,7 +49,7 @@ export default function Blog() {
                         {post.title}
                       </CardTitle>
                       <p className="text-sm text-muted-foreground">
-                        {format(post.publishedAt, 'MMMM d, yyyy')}
+                        {format(new Date(post.publishedAt), 'MMMM d, yyyy')}
                       </p>
                     </div>
                   </CardHeader>

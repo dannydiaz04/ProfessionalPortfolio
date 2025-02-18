@@ -2,6 +2,13 @@ import { pgTable, text, serial, json, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  username: text("username").notNull(),
+  password: text("password").notNull(),
+  email: text("email").notNull()
+});
+
 export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -30,6 +37,7 @@ export const blogPosts = pgTable("blog_posts", {
   tags: text("tags").array().notNull()
 });
 
+export const insertUserSchema = createInsertSchema(users);
 export const insertProjectSchema = createInsertSchema(projects);
 export const insertBusinessSchema = createInsertSchema(businesses);
 export const insertBlogPostSchema = createInsertSchema(blogPosts, {
@@ -38,9 +46,12 @@ export const insertBlogPostSchema = createInsertSchema(blogPosts, {
   excerpt: z.string().max(200, 'Excerpt must be 200 characters or less'),
 });
 
+// Export types
+export type User = typeof users.$inferSelect;
 export type Project = typeof projects.$inferSelect;
 export type Business = typeof businesses.$inferSelect;
 export type BlogPost = typeof blogPosts.$inferSelect;
+export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertProject = z.infer<typeof insertProjectSchema>;
 export type InsertBusiness = z.infer<typeof insertBusinessSchema>;
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
