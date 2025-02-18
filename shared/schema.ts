@@ -42,7 +42,8 @@ export const blogPosts = pgTable("blog_posts", {
   slug: text("slug").notNull(),
   publishedAt: timestamp("published_at").notNull().defaultNow(),
   tags: text("tags").array().notNull(),
-  categoryId: serial("category_id").references(() => categories.id)
+  // Make categoryId optional to prevent data loss
+  categoryId: serial("category_id").references(() => categories.id).notNull().default(1)
 });
 
 export const insertCategorySchema = createInsertSchema(categories, {

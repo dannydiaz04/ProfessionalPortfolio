@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
 import { format } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
 import type { BlogPost } from '@shared/schema';
+import { FolderOpen } from 'lucide-react';
 
 export default function Blog() {
   const { data: posts, isLoading } = useQuery<BlogPost[]>({
@@ -59,6 +61,11 @@ export default function Blog() {
       >
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-mono font-bold">Blog</h1>
+          <Link href="/blog/categories">
+            <Button variant="outline">
+              <FolderOpen className="mr-2 h-4 w-4" /> Manage Categories
+            </Button>
+          </Link>
         </div>
 
         <div className="grid gap-6">
