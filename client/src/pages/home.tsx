@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import { Link } from 'wouter';
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export default function Home() {
   return (
@@ -13,10 +14,31 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-6"
       >
-        <TerminalText
-          text="Hello, World! I'm a Developer & Entrepreneur"
-          className="text-4xl md:text-6xl font-bold mb-8"
-        />
+        <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            whileHover={{ scale: 1.05 }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse" />
+            <Avatar className="h-48 w-48 rounded-full ring-2 ring-primary/50 overflow-hidden">
+              <AvatarImage
+                src="/attached_assets/professional_photo_headshot.jpg"
+                alt="Profile photo"
+                className="object-cover"
+              />
+            </Avatar>
+          </motion.div>
+
+          <div className="flex-1">
+            <TerminalText
+              text="Hello, World! Name's Daniel. I'm a Aerospace Machine Learning Developer & Entrepreneur"
+              className="text-4xl md:text-6xl font-bold"
+            />
+          </div>
+        </div>
 
         <Card className="p-6 bg-card/50 backdrop-blur">
           <p className="text-lg mb-4">
