@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { BlogPost } from '@shared/schema';
 
 export default function Blog() {
-  const { data: posts, isLoading } = useQuery({
+  const { data: posts, isLoading } = useQuery<BlogPost[]>({
     queryKey: ['/api/blog'],
     gcTime: 0,
     refetchOnMount: true
@@ -62,7 +62,7 @@ export default function Blog() {
         </div>
 
         <div className="grid gap-6">
-          {posts?.map((post, index) => (
+          {posts?.map((post: BlogPost, index: number) => (
             <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}
@@ -84,7 +84,7 @@ export default function Blog() {
                   <CardContent>
                     <p className="mb-4">{post.excerpt}</p>
                     <div className="flex flex-wrap gap-2">
-                      {post.tags.map(tag => (
+                      {post.tags.map((tag: string) => (
                         <Badge key={tag} variant="secondary">
                           {tag}
                         </Badge>
