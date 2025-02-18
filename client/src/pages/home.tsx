@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import { Link } from 'wouter';
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+// Import the image
+import profilePhoto from '../../../attached_assets/professional_photo_headshot.jpg';
 
 export default function Home() {
   return (
@@ -25,7 +27,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse" />
             <Avatar className="h-48 w-48 rounded-full ring-2 ring-primary/50 overflow-hidden">
               <AvatarImage
-                src="/attached_assets/professional_photo_headshot.jpg"
+                src={profilePhoto}
                 alt="Profile photo"
                 className="object-cover"
               />
