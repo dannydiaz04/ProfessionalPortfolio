@@ -7,10 +7,10 @@ import { useQuery } from '@tanstack/react-query';
 import type { BlogPost } from '@shared/schema';
 
 export default function Blog() {
-  const { data: posts, isLoading } = useQuery<BlogPost[]>({
+  const { data: posts, isLoading } = useQuery({
     queryKey: ['/api/blog'],
-    staleTime: 0, // Make sure we always show loading state
-    cacheTime: 0,
+    gcTime: 0,
+    refetchOnMount: true
   });
 
   if (isLoading) {
@@ -22,10 +22,28 @@ export default function Blog() {
           className="space-y-8"
         >
           <h1 className="text-4xl font-mono font-bold">Blog</h1>
-          <div className="space-y-4">
-            <div className="h-32 bg-muted/10 animate-pulse rounded-lg" />
-            <div className="h-32 bg-muted/10 animate-pulse rounded-lg" />
-            <div className="h-32 bg-muted/10 animate-pulse rounded-lg" />
+          <div className="grid gap-6">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="bg-card/50 backdrop-blur">
+                <CardHeader>
+                  <div className="space-y-3">
+                    <div className="h-6 w-2/3 bg-muted rounded animate-pulse" />
+                    <div className="h-4 w-1/4 bg-muted/60 rounded animate-pulse" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="h-4 w-full bg-muted/60 rounded animate-pulse" />
+                    <div className="h-4 w-5/6 bg-muted/60 rounded animate-pulse" />
+                    <div className="flex gap-2 mt-4">
+                      {[1, 2, 3].map((j) => (
+                        <div key={j} className="h-6 w-16 bg-muted/40 rounded-full animate-pulse" />
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </motion.div>
       </div>
@@ -44,7 +62,7 @@ export default function Blog() {
         </div>
 
         <div className="grid gap-6">
-          {(posts || []).map((post, index) => (
+          {posts?.map((post, index) => (
             <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}
