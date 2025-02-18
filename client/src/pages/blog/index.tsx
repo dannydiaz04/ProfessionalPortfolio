@@ -7,17 +7,27 @@ import { useQuery } from '@tanstack/react-query';
 import type { BlogPost } from '@shared/schema';
 
 export default function Blog() {
-  const { data: posts = [], isLoading } = useQuery<BlogPost[]>({
+  const { data: posts, isLoading } = useQuery<BlogPost[]>({
     queryKey: ['/api/blog'],
+    staleTime: 0, // Make sure we always show loading state
+    cacheTime: 0,
   });
 
   if (isLoading) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="space-y-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="space-y-8"
+        >
           <h1 className="text-4xl font-mono font-bold">Blog</h1>
-          <p className="text-muted-foreground">Loading posts...</p>
-        </div>
+          <div className="space-y-4">
+            <div className="h-32 bg-muted/10 animate-pulse rounded-lg" />
+            <div className="h-32 bg-muted/10 animate-pulse rounded-lg" />
+            <div className="h-32 bg-muted/10 animate-pulse rounded-lg" />
+          </div>
+        </motion.div>
       </div>
     );
   }
@@ -34,7 +44,7 @@ export default function Blog() {
         </div>
 
         <div className="grid gap-6">
-          {posts.map((post, index) => (
+          {(posts || []).map((post, index) => (
             <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}
