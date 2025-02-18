@@ -2,6 +2,13 @@ import { pgTable, text, serial, json, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+export const categories = pgTable("categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull(),
+  description: text("description")
+});
+
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull(),
@@ -34,7 +41,13 @@ export const blogPosts = pgTable("blog_posts", {
   excerpt: text("excerpt").notNull(),
   slug: text("slug").notNull(),
   publishedAt: timestamp("published_at").notNull().defaultNow(),
-  tags: text("tags").array().notNull()
+  tags: text("tags").array().notNull(),
+  categoryId: serial("category_id").references(() => categories.id)
+});
+
+export const insertCategorySchema = createInsertSchema(categories, {
+  slug: z.string().min(1).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 
+    'Slug must be lowercase letters, numbers, and hyphens only'),
 });
 
 export const insertUserSchema = createInsertSchema(users);
@@ -47,10 +60,12 @@ export const insertBlogPostSchema = createInsertSchema(blogPosts, {
 });
 
 // Export types
+export type Category = typeof categories.$inferSelect;
 export type User = typeof users.$inferSelect;
 export type Project = typeof projects.$inferSelect;
 export type Business = typeof businesses.$inferSelect;
 export type BlogPost = typeof blogPosts.$inferSelect;
+export type InsertCategory = z.infer<typeof insertCategorySchema>;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertProject = z.infer<typeof insertProjectSchema>;
 export type InsertBusiness = z.infer<typeof insertBusinessSchema>;
