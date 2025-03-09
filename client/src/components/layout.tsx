@@ -2,6 +2,17 @@ import { Link, useLocation } from 'wouter';
 import { motion } from 'framer-motion';
 import { MatrixEffect } from './matrix-effect';
 import { ThemeToggle } from './theme-toggle';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { MobileNav } from './mobile-nav';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { path: '/', label: 'Home' },
@@ -13,36 +24,55 @@ const navItems = [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  const isMobile = useIsMobile();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <MatrixEffect />
 
       <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur">
-        <nav className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/">
             <a className="font-mono text-xl font-bold text-primary hover:text-primary/80">
               {'<Portfolio />'}
             </a>
           </Link>
 
-          <div className="flex items-center gap-6">
-            {navItems.map(({ path, label }) => (
-              <Link key={path} href={path}>
-                <a className="relative font-mono">
-                  {location === path && (
-                    <motion.div
-                      layoutId="active"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
-                    />
-                  )}
-                  {label}
-                </a>
-              </Link>
-            ))}
+          <div className="flex items-center gap-4">
+            {/* Mobile Navigation */}
+            <MobileNav items={navItems} />
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:block">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  {navItems.map(({ path, label }) => (
+                    <NavigationMenuItem key={path}>
+                      <Link href={path}>
+                        <NavigationMenuLink
+                          className={cn(
+                            "relative font-mono px-4 py-2 hover:bg-accent hover:text-accent-foreground rounded-md transition-colors",
+                            location === path && "bg-accent text-accent-foreground"
+                          )}
+                        >
+                          {label}
+                          {location === path && (
+                            <motion.div
+                              layoutId="active"
+                              className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
+                            />
+                          )}
+                        </NavigationMenuLink>
+                      </Link>
+                    </NavigationMenuItem>
+                  ))}
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
+            
             <ThemeToggle />
           </div>
-        </nav>
+        </div>
       </header>
 
       <main className="pt-16 min-h-screen">

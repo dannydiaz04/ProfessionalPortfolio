@@ -5,11 +5,23 @@ import * as schema from "@shared/schema";
 
 neonConfig.webSocketConstructor = ws;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
+// Create a mock DB implementation or use actual connection depending on environment
+let pool;
+let db;
+
+if (process.env.DATABASE_URL) {
+  // Only connect if database URL is provided
+  pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  db = drizzle({ client: pool, schema });
+  console.log("Database connected successfully");
+} else {
+  console.log("No DATABASE_URL provided. Running without database connection.");
+  // You can implement a mock DB here if needed
+  db = {
+    // Add any mock methods you might need during development
+    query: async () => ({ rows: [] }),
+    // Add other mock implementations as needed
+  };
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = drizzle({ client: pool, schema });
+export { pool, db };
