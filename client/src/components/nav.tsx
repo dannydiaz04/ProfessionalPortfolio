@@ -20,7 +20,7 @@ export function Nav() {
     <nav className="sticky top-0 z-30 w-full border-b bg-background/80 backdrop-blur">
       <div className="container flex h-16 items-center px-4">
         <Link href="/">
-          <div className="mr-6 flex items-center space-x-2 cursor-pointer"></div>
+          <div className="mr-6 flex items-center space-x-2 cursor-pointer">
             <span className="font-mono font-bold text-xl">Portfolio</span>
           </div>
         </Link>
@@ -52,15 +52,17 @@ export function Nav() {
             <SheetContent side="right">
               <div className="grid gap-2 py-6">
                 {links.map((link) => (
-                  <Link key={link.href} href={link.href}></Link>
-                    {({ isActive }) => (
-                      <Button
-                        variant={isActive ? "default" : "ghost"}
-                        className="w-full justify-start"
-                      >
-                        {link.label}
-                      </Button>
-                    )}
+                  <Link key={link.href} href={link.href}>
+                    <>
+                      {({ isActive }: { isActive: boolean }) => (
+                        <Button
+                          variant={isActive ? "default" : "ghost"}
+                          className="w-full justify-start"
+                        >
+                          {link.label}
+                        </Button>
+                      )}
+                    </>
                   </Link>
                 ))}
                 <div className="mt-4">
@@ -103,8 +105,16 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   );
 }
 
-function ThemeToggle() {
+const ThemeToggle: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>(
     document.documentElement.classList.contains("dark") ? "dark" : "light"
   );
-}
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+  };
+
+  return <Button onClick={toggleTheme}>Toggle Theme</Button>;
+};

@@ -1,6 +1,8 @@
 import { blogPosts, categories, type BlogPost, type InsertBlogPost, type Category, type InsertCategory } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
+import { DrizzleClient } from 'drizzle-orm/neon-serverless';
+import * as schema from '@shared/schema';
 
 export interface IStorage {
   // Blog post methods

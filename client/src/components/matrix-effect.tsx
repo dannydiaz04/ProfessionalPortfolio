@@ -5,43 +5,42 @@ export function MatrixEffect() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const ctx = canvas?.getContext('2d');
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (canvas && ctx) {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+      const chars = '01';
+      const font_size = 14;
+      const columns = canvas.width / font_size;
+      const drops: number[] = [];
 
-    const chars = '01';
-    const font_size = 14;
-    const columns = canvas.width / font_size;
-    const drops: number[] = [];
-
-    for (let i = 0; i < columns; i++) {
-      drops[i] = 1;
-    }
-
-    function draw() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = '#0F0';
-      ctx.font = font_size + 'px monospace';
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, i * font_size, drops[i] * font_size);
-
-        if (drops[i] * font_size > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
+      for (let i = 0; i < columns; i++) {
+        drops[i] = 1;
       }
-    }
 
-    const interval = setInterval(draw, 33);
-    return () => clearInterval(interval);
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx?.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx?.fillStyle = '#0F0';
+        ctx?.font = font_size + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars[Math.floor(Math.random() * chars.length)];
+          ctx?.fillText(text, i * font_size, drops[i] * font_size);
+
+          if (drops[i] * font_size > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      const interval = setInterval(draw, 33);
+      return () => clearInterval(interval);
+    }
   }, []);
 
   return (

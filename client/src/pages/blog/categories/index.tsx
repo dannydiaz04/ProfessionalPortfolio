@@ -43,10 +43,7 @@ export default function Categories() {
 
   const onSubmit = async (data: CategoryForm) => {
     try {
-      await apiRequest('/api/categories', {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
+      await apiRequest('POST', '/api/categories', data);
       queryClient.invalidateQueries({ queryKey: ['/api/categories'] });
       form.reset();
       toast({
