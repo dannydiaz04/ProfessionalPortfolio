@@ -2,14 +2,6 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist/public",
-  "builds": [
-    { "src": "package.json", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/dist/index.js" },
-    { "src": "/(.*\\.(js|css|jpg|png|svg|ico|json))", "dest": "/dist/public/$1" },
-    { "src": "/(.*)", "dest": "/dist/public/index.html" }
-  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
