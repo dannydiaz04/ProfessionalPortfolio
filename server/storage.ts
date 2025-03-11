@@ -1,8 +1,7 @@
 import { blogPosts, categories, type BlogPost, type InsertBlogPost, type Category, type InsertCategory } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
-import { DrizzleClient } from 'drizzle-orm/neon-serverless';
-import * as schema from '@shared/schema';
+import { projects, contacts } from "@shared/schema";
 
 export interface IStorage {
   // Blog post methods
@@ -53,5 +52,45 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 }
+
+// Project methods
+export const getProjects = async () => {
+  return await db.query.projects.findMany();
+};
+
+export const getProjectById = async (id: string) => {
+  return await db.query.projects.findFirst({
+    where: eq(projects.id, parseInt(id, 10))
+  });
+};
+
+export const createProject = async (projectData: any) => {
+  return await db.insert(projects)
+    .values(projectData)
+    .returning();
+};
+
+// Blog methods
+export const getBlogs = async () => {
+  return await db.select().from(blogPosts);
+};
+
+export const getBlogById = async (id: string) => {
+  const [blog] = await db.select().from(blogPosts).where(eq(blogPosts.id, parseInt(id, 10)));
+  return blog;
+};
+
+export const createBlog = async (blogData: any) => {
+  return await db.insert(blogPosts)
+    .values(blogData)
+    .returning();
+};
+
+// Contact methods
+export const createContact = async (contactData: any) => {
+  return await db.insert(contacts)
+    .values(contactData)
+    .returning();
+};
 
 export const storage = new DatabaseStorage();
