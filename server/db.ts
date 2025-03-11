@@ -5,23 +5,22 @@ import * as schema from "@shared/schema";
 
 neonConfig.webSocketConstructor = ws;
 
-// Create a mock DB implementation or use actual connection depending on environment
-let pool;
-let db;
+// Create a properly typed db instance
+export let pool: Pool;
+export let db: ReturnType<typeof drizzle<typeof schema>>;
 
 if (process.env.DATABASE_URL) {
   // Only connect if database URL is provided
   pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  db = drizzle({ client: pool, schema });
+  db = drizzle(pool, { schema });
   console.log("Database connected successfully");
 } else {
-  console.log("No DATABASE_URL provided. Running without database connection.");
-  // You can implement a mock DB here if needed
-  db = {
-    // Add any mock methods you might need during development
+  console.log("No DATABASE_URL provided. Running with mock database.");
+  // Create a mock pool that returns empty results
+  const mockPool = {
     query: async () => ({ rows: [] }),
-    // Add other mock implementations as needed
-  };
+  } as unknown as Pool;
+  
+  pool = mockPool;
+  db = drizzle(mockPool, { schema });
 }
-
-export { pool, db };

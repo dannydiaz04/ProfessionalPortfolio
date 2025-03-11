@@ -1,4 +1,4 @@
-import { pgTable, text, serial, json, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, json, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -46,6 +46,14 @@ export const blogPosts = pgTable("blog_posts", {
   categoryId: serial("category_id").references(() => categories.id)
 });
 
+export const contacts = pgTable("contacts", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const insertCategorySchema = createInsertSchema(categories, {
   slug: z.string().min(1).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 
     'Slug must be lowercase letters, numbers, and hyphens only'),
@@ -66,8 +74,10 @@ export type User = typeof users.$inferSelect;
 export type Project = typeof projects.$inferSelect;
 export type Business = typeof businesses.$inferSelect;
 export type BlogPost = typeof blogPosts.$inferSelect;
+export type Contact = typeof contacts.$inferSelect;
 export type InsertCategory = z.infer<typeof insertCategorySchema>;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertProject = z.infer<typeof insertProjectSchema>;
 export type InsertBusiness = z.infer<typeof insertBusinessSchema>;
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
+export type InsertContact = typeof contacts.$inferInsert;
