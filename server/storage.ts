@@ -1,13 +1,6 @@
-import { blogPosts, categories, projects, type BlogPost, type InsertBlogPost, type Category, type InsertCategory } from "@shared/schema";
-import { db } from "./db";
-import { eq } from "drizzle-orm";
+import type { BlogPost, Category, InsertBlogPost, InsertCategory } from "@shared/schema";
 
-// Check if contacts exists in schema, if not declare it
-// This addresses the error about missing 'contacts' export
-const contacts = "contacts" in "@shared/schema" 
-  ? (await import("@shared/schema")).contacts 
-  : { id: { name: "id" } }; // placeholder if not found
-
+// Storage interface remains the same
 export interface IStorage {
   // Blog post methods
   getBlogPosts(): Promise<BlogPost[]>;
@@ -21,85 +14,73 @@ export interface IStorage {
   getCategoryById(id: number): Promise<Category | undefined>;
 }
 
-export class DatabaseStorage implements IStorage {
+// Static data for mock storage
+const mockCategories: Category[] = [
+  { id: 1, name: "Technology", slug: "technology", description: "Tech-related posts" },
+  { id: 2, name: "Design", slug: "design", description: "Design-related posts" },
+];
+
+const mockBlogPosts: BlogPost[] = [
+  {
+    id: 1,
+    title: "Getting Started with React",
+    content: "This is a guide to getting started with React...",
+    excerpt: "Learn the basics of React in this introductory post",
+    slug: "getting-started-with-react",
+    publishedAt: new Date(),
+    tags: ["react", "javascript", "frontend"],
+    categoryId: 1
+  },
+];
+
+// Replace database implementation with mock implementation
+export class MockStorage implements IStorage {
+  private blogPosts = [...mockBlogPosts];
+  private categories = [...mockCategories];
+  private nextBlogId = 2;
+  private nextCategoryId = 3;
+
   // Blog post methods
   async getBlogPosts(): Promise<BlogPost[]> {
-    return await db.select().from(blogPosts).orderBy(blogPosts.publishedAt);
+    return [...this.blogPosts];
   }
 
   async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
-    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
-    return post;
+    return this.blogPosts.find(post => post.slug === slug);
   }
 
   async createBlogPost(post: InsertBlogPost): Promise<BlogPost> {
-    const [created] = await db.insert(blogPosts).values(post).returning();
-    return created;
+    const newPost = {
+      ...post,
+      id: this.nextBlogId++,
+      publishedAt: new Date(),
+    } as BlogPost;
+    this.blogPosts.push(newPost);
+    return newPost;
   }
 
   // Category methods
   async getCategories(): Promise<Category[]> {
-    return await db.select().from(categories);
+    return [...this.categories];
   }
 
   async getCategoryBySlug(slug: string): Promise<Category | undefined> {
-    const [category] = await db.select().from(categories).where(eq(categories.slug, slug));
-    return category;
+    return this.categories.find(category => category.slug === slug);
   }
 
   async getCategoryById(id: number): Promise<Category | undefined> {
-    const [category] = await db.select().from(categories).where(eq(categories.id, id));
-    return category;
+    return this.categories.find(category => category.id === id);
   }
 
   async createCategory(category: InsertCategory): Promise<Category> {
-    const [created] = await db.insert(categories).values(category).returning();
-    return created;
+    const newCategory = {
+      ...category,
+      id: this.nextCategoryId++
+    } as Category;
+    this.categories.push(newCategory);
+    return newCategory;
   }
 }
 
-// Project methods
-export const getProjects = async () => {
-  return await db.query.projects.findMany();
-};
-
-export const getProjectById = async (id: string) => {
-  return await db.query.projects.findFirst({
-    where: eq(projects.id, parseInt(id, 10))
-  });
-};
-
-export const createProject = async (projectData: any) => {
-  return await db.insert(projects)
-    .values(projectData)
-    .returning();
-};
-
-// Blog methods
-export const getBlogs = async () => {
-  return await db.select().from(blogPosts);
-};
-
-export const getBlogById = async (id: string) => {
-  const [blog] = await db.select().from(blogPosts).where(eq(blogPosts.id, parseInt(id, 10)));
-  return blog;
-};
-
-export const createBlog = async (blogData: any) => {
-  return await db.insert(blogPosts)
-    .values(blogData)
-    .returning();
-};
-
-// Contact methods - make this conditional based on schema
-export const createContact = async (contactData: any) => {
-  // Check if contacts table exists in schema before trying to use it
-  if (contacts) {
-    return await db.insert(contacts)
-      .values(contactData)
-      .returning();
-  }
-  return [{ id: "mock-contact", ...contactData }];
-};
-
-export const storage = new DatabaseStorage();
+// Export a single instance to be used throughout the application
+export const storage = new MockStorage();
