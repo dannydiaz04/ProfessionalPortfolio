@@ -5,6 +5,7 @@ import { Link, useLocation } from "wouter"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Menu } from "lucide-react"
+import { useState } from "react"
 
 interface MobileNavProps {
   items: Array<{ path: string; label: string }>
@@ -19,10 +20,22 @@ export function MobileNav({
   ],
 }: MobileNavProps) {
   const [location] = useLocation()
+  const [accordionValue, setAccordionValue] = useState<string | undefined>("menu")
+  
+  // Function to handle navigation and menu closing
+  const handleNavigation = () => {
+    setAccordionValue(undefined) // Close the accordion
+  }
 
   return (
     <div className="md:hidden fixed top-0 right-0 left-0 z-50 bg-background/95 backdrop-blur-sm border-b">
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion 
+        type="single" 
+        collapsible 
+        className="w-full" 
+        value={accordionValue}
+        onValueChange={setAccordionValue}
+      >
         <AccordionItem value="menu" className="border-b-0">
           <div className="flex items-center justify-between px-4">
             <div className="py-4 font-semibold">Menu</div>
@@ -42,7 +55,7 @@ export function MobileNav({
                 className="flex flex-col space-y-1 px-4"
               >
                 {items.map(({ path, label }) => (
-                  <Link key={path} href={path}>
+                  <Link key={path} href={path} onClick={handleNavigation}>
                     <motion.a
                       className={cn(
                         "relative px-4 py-3 rounded-md transition-all",

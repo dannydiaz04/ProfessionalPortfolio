@@ -88,11 +88,11 @@ export default function Projects() {
                       </Badge>
                     ))}
                   </div>
-                  <a href={project.link} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" size="sm">
+                  {/* <a href={project.link} target="_blank" rel="noopener noreferrer"> */}
+                    {/* <Button variant="outline" size="sm">
                       View Project <ExternalLink className="ml-2 h-4 w-4" />
                     </Button>
-                  </a>
+                  </a> */}
                 </CardContent>
               </Card>
             </motion.div>
