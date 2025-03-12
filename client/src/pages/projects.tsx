@@ -2,29 +2,27 @@ import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
 import { FilterBar } from '@/components/filter-bar';
 
 const projects = [
   {
-    title: 'Project Alpha',
-    description: 'A revolutionary AI-powered analytics platform',
-    technologies: ['React', 'TypeScript', 'Python', 'TensorFlow'],
-    link: 'https://example.com/alpha'
+    title: 'Weather App',
+    description: 'A weather app that allows you to search for weather information for a specific location',
+    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'OpenWeatherMap API', 'TensorFlow'],
+    link: 'https://weather-app-omega-one.vercel.app/'
   },
-  {
-    title: 'Beta System',
-    description: 'Enterprise-grade cloud infrastructure solution',
-    technologies: ['AWS', 'Kubernetes', 'Go', 'Terraform'],
-    link: 'https://example.com/beta'
-  },
-  {
-    title: 'Gamma Analytics',
-    description: 'Real-time data visualization dashboard',
-    technologies: ['React', 'D3.js', 'Node.js', 'MongoDB'],
-    link: 'https://example.com/gamma'
-  }
+  // {
+  //   title: 'Beta System',
+  //   description: 'A cloud infrastructure solution for a company',
+  //   technologies: ['AWS', 'Kubernetes', 'Go', 'Terraform'],
+  //   link: 'https://example.com/beta'
+  // },
+  // {
+  //   title: 'Gamma Analytics',
+  //   description: 'A real-time data visualization dashboard',
+  //   technologies: ['React', 'D3.js', 'Node.js', 'MongoDB'],
+  //   link: 'https://example.com/gamma'
+  // }
 ];
 
 export default function Projects() {
