@@ -49,9 +49,9 @@ export default function Businesses() {
                 <CardContent>
                   <p className="mb-4">{business.description}</p>
                   <a href={business.link} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" size="sm">
+                    {/* <Button variant="outline" size="sm">
                       Visit Website <ExternalLink className="ml-2 h-4 w-4" />
-                    </Button>
+                    </Button> */}
                   </a>
                 </CardContent>
               </Card>

@@ -61,7 +61,7 @@ export default function Home() {
         </Card>
 
         <div className="flex gap-4 mt-8">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/dannydiaz04" target="_blank" rel="noopener noreferrer">
             <Button variant="ghost" size="icon">
               <Github className="h-5 w-5" />
             </Button>
