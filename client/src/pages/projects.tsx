@@ -11,12 +11,12 @@ const projects = [
     technologies: ['React', 'TypeScript', 'Tailwind CSS', 'OpenWeatherMap API', 'TensorFlow'],
     link: 'https://weather-app-omega-one.vercel.app/'
   },
-  // {
-  //   title: 'Beta System',
-  //   description: 'A cloud infrastructure solution for a company',
-  //   technologies: ['AWS', 'Kubernetes', 'Go', 'Terraform'],
-  //   link: 'https://example.com/beta'
-  // },
+  {
+    title: 'ELT Pipeline & Data Warehouse',
+    description: 'A cloud infrastructure solution for a company',
+    technologies: ['AWS', 'Kubernetes', 'Go', 'Azure', 'Airflow', 'Dbt', 'Snowflake', 'PySpark'],
+    link: 'https://example.com/beta'
+  },
   // {
   //   title: 'Gamma Analytics',
   //   description: 'A real-time data visualization dashboard',
