@@ -20,11 +20,11 @@ export function MobileNav({
   ],
 }: MobileNavProps) {
   const [location] = useLocation()
-  const [accordionValue, setAccordionValue] = useState<string | undefined>("menu")
+  const [accordionValue, setAccordionValue] = useState<string>("")
   
   // Function to handle navigation and menu closing
   const handleNavigation = () => {
-    setAccordionValue(undefined) // Close the accordion
+    setAccordionValue("") // Close the accordion
   }
 
   return (
